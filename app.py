@@ -177,7 +177,9 @@ with st.container():
         st.subheader("จำนวนเงินการเรียกร้องค่าสินไหมทดแทน")
         fig2 = px.bar(claim_acd_amt, x='ประเภท', y='จำนวน (ล้านบาท)', title='จำนวนเงินการเรียกร้องค่าสินไหมทดแทน', color='ประเภท', color_discrete_map={'จำนวนเงินที่เคลม_เสียชีวิต':'#D1512D','จำนวนเงินที่เคลม_บาดเจ็บ':'#53629E','จำนวนเงินที่เคลม_ทุพพลภาพ':'#8AA624'})
         fig2.update_traces(textposition='outside', texttemplate='%{y:,.2f} MB')
-        fig2.update_layout(margin=dict(t=120), yaxis=dict(automargin=True), uniformtext_mode='hide',paper_bgcolor='#F4F4F4')
+        fig2.update_layout(margin=dict(l=100, r=100, t=120, b=100), yaxis=dict(automargin=True), uniformtext_mode='hide',paper_bgcolor='#F4F4F4')
+        fig2.update_xaxes(automargin=True)
+        fig2.update_yaxes(automargin=True)
         st.plotly_chart(fig2, use_container_width=True)
         
         
@@ -190,5 +192,6 @@ with st.container():
         fig4.update_layout(annotations=[dict(text=f"Total<br>{total_claim_nl:,.2f} MB<br>", x=0.5, y=0.5, font_size=16, showarrow=False)],paper_bgcolor='#F4F4F4')
         st.plotly_chart(fig4, use_container_width=True)
         
+
 
 
