@@ -174,7 +174,11 @@ with st.container():
 
 
     with col2:
-        
+        claim_acd_amt = df_selected[['จำนวนเงินที่เคลม_เสียชีวิต','จำนวนเงินที่เคลม_บาดเจ็บ','จำนวนเงินที่เคลม_ทุพพลภาพ']].sum().reset_index()
+        claim_acd_amt.columns = ['ประเภท','จำนวน (ล้านบาท)']
+        total_claim_acd = claim_acd_amt['จำนวน (ล้านบาท)'].sum()
+        st.subheader("จำนวนเงินการเรียกร้องค่าสินไหมทดแทน")
+        st.markdown(f"**Total {total_claim_acd:,.2f} MB**")
         st.subheader("จำนวนเงินการเรียกร้องค่าสินไหมทดแทน")
         fig2 = px.bar(claim_acd_amt, x='ประเภท', y='จำนวน (ล้านบาท)', title='จำนวนเงินการเรียกร้องค่าสินไหมทดแทน', color='ประเภท', color_discrete_map={'จำนวนเงินที่เคลม_เสียชีวิต':'#D1512D','จำนวนเงินที่เคลม_บาดเจ็บ':'#53629E','จำนวนเงินที่เคลม_ทุพพลภาพ':'#8AA624'})
         fig2.update_traces(textposition='outside', texttemplate='%{y:,.2f} MB')
