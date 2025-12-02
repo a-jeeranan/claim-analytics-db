@@ -166,7 +166,7 @@ with st.container():
         claim_status_life.columns = ['สถานะ','จำนวน (ล้านบาท)']
         total_claim_life = claim_status_life['จำนวน (ล้านบาท)'].sum()
         fig3 = px.pie(claim_status_life, values='จำนวน (ล้านบาท)', names='สถานะ', title='ผู้ประสบอุบัติเหตุ', hole=0.5, color='สถานะ', color_discrete_map={'เคลม_ผู้ประสบอุบัติเหตุ_จ่ายแล้ว':'#A3D78A','เคลม_ผู้ประสบอุบัติเหตุ_อยู่ระหว่างดำเนินการ':'#F5C857'})
-        fig3.update_traces(textposition='auto', texttemplate='%{percent} (%{value:.2f} MB)')
+        fig3.update_traces(textposition='outside', texttemplate='%{percent}<br>%{value:.2f} MB<br>')
         fig3.update_layout(annotations=[dict(text=f"Total<br>{total_claim_life:,.2f} MB<br>", x=0.5, y=0.5, font_size=16, showarrow=False)],paper_bgcolor='#F4F4F4')
         st.plotly_chart(fig3, use_container_width=True)
 
@@ -185,10 +185,11 @@ with st.container():
         claim_status_nl.columns = ['สถานะ','จำนวน (ล้านบาท)']
         total_claim_nl = claim_status_nl['จำนวน (ล้านบาท)'].sum()
         fig4 = px.pie(claim_status_nl, values='จำนวน (ล้านบาท)', names='สถานะ', title='ทรัพย์สิน', hole=0.5, color='สถานะ', color_discrete_map={'เคลม_ทรัพย์สิน_จ่ายแล้ว':'#A3D78A','เคลม_ทรัพย์สิน_อยู่ระหว่างดำเนินการ':'#F5C857'},)
-        fig4.update_traces(textposition='auto', texttemplate='%{percent} (%{value:.2f} MB)')
+        fig4.update_traces(textposition='outside', texttemplate='%{percent}<br>%{value:.2f} MB<br>')
         fig4.update_layout(annotations=[dict(text=f"Total<br>{total_claim_nl:,.2f} MB<br>", x=0.5, y=0.5, font_size=16, showarrow=False)],paper_bgcolor='#F4F4F4')
         st.plotly_chart(fig4, use_container_width=True)
         
+
 
 
 
