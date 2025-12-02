@@ -80,8 +80,8 @@ with st.container():
             margin-bottom: 10px;
             font-weight: bold;
         }
-        .white-box {
-            border-left: 12px solid #C9B59C;
+        .brown-box {
+            border-left: 12px solid #ADA991;
             background-color: #F4F4F4;
         }
         .blue-box {
@@ -92,8 +92,8 @@ with st.container():
             border-left: 12px solid #8BAE66;
             background-color: #F4F4F4;
         }
-        .orange-box {
-            border-left: 12px solid #FF937E;
+        .pink-box {
+            border-left: 12px solid #E195AB;
             background-color: #F4F4F4;
         }
         .metric-title {
@@ -113,7 +113,7 @@ with st.container():
         acd_dt.columns = ['ประเภท','จำนวน']
         total_pp = acd_dt['จำนวน'].sum()
         st.markdown(f"""
-            <div class="metric-box white-box">
+            <div class="metric-box brown-box">
                 <div class="metric-title">Total Amount</div>
                 <div class="metric-value">{total_pp:,} คน</div>
             </div>
@@ -125,7 +125,7 @@ with st.container():
         total_claim.columns = ['สถานะ','จำนวน (ล้านบาท)']
         total_claim = total_claim['จำนวน (ล้านบาท)'].sum()
         st.markdown(f"""
-            <div class="metric-box orange-box">
+            <div class="metric-box pink-box">
                 <div class="metric-title">Total Claims Amount</div>
                 <div class="metric-value">{total_claim:,.2f} MB</div>
             </div>
@@ -167,7 +167,7 @@ with st.container():
         claim_status_life.columns = ['สถานะ','จำนวน (ล้านบาท)']
         total_claim_life = claim_status_life['จำนวน (ล้านบาท)'].sum()
         fig3 = px.pie(claim_status_life, values='จำนวน (ล้านบาท)', names='สถานะ', title='ผู้ประสบอุบัติเหตุ', hole=0.5, color='สถานะ', color_discrete_map={'เคลม_ผู้ประสบอุบัติเหตุ_จ่ายแล้ว':'#A3D78A','เคลม_ผู้ประสบอุบัติเหตุ_อยู่ระหว่างดำเนินการ':'#F5C857'})
-        fig3.update_traces(textposition='outside', texttemplate='%{percent}<br>(%{value:.2f} MB)'<br>)
+        fig3.update_traces(textposition='outside', texttemplate='%{percent}<br>(%{value:.2f} MB)<br>')
         fig3.update_layout(annotations=[dict(text=f"Total<br>{total_claim_life:,.2f} MB<br>", x=0.5, y=0.5, font_size=16, showarrow=False)],paper_bgcolor='#F4F4F4')
         st.plotly_chart(fig3, use_container_width=True)
 
