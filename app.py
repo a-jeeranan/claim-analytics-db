@@ -9,6 +9,7 @@ warnings.filterwarnings('ignore')
 
 st.set_page_config(
     page_title='7 Dangerous Days Claims Report',
+    page_icon='🚗🚨',
     layout='wide',
     initial_sidebar_state='expanded'
 )
@@ -89,11 +90,11 @@ with st.container():
             background-color: #F4F4F4;
         }
         .green-box {
-            border-left: 12px solid #A3D78A;
+            border-left: 12px solid #8BAE66;
             background-color: #F4F4F4;
         }
-        .yellow-box {
-            border-left: 12px solid #F5C857;
+        .orange-box {
+            border-left: 12px solid #FF937E;
             background-color: #F4F4F4;
         }
         .metric-title {
@@ -121,34 +122,35 @@ with st.container():
 
     
     with c2:    
-        claim_acd_amt = df_selected[['จำนวนเงินที่เคลม_เสียชีวิต','จำนวนเงินที่เคลม_บาดเจ็บ','จำนวนเงินที่เคลม_ทุพพลภาพ']].sum().reset_index()
-        claim_acd_amt.columns = ['ประเภท','จำนวน (ล้านบาท)']
-        total_claim = claim_acd_amt['จำนวน (ล้านบาท)'].sum()
+        total_claim = df_selected[['เคลม_ทั้งหมด_จ่ายแล้ว','เคลม_ทั้งหมด_อยู่ระหว่างดำเนินการ']].sum().reset_index()
+        total_claim.columns = ['สถานะ','จำนวน (ล้านบาท)']
+        total_claim = total_claim['จำนวน (ล้านบาท)'].sum()
         st.markdown(f"""
-            <div class="metric-box blue-box">
+            <div class="metric-box orange-box">
                 <div class="metric-title">Total Claims Amount</div>
                 <div class="metric-value">{total_claim:,.2f} MB</div>
             </div>
         """, unsafe_allow_html=True)
 
     with c3:    
-        claim_status_paid = df_selected[['เคลม_ผู้ประสบอุบัติเหตุ_จ่ายแล้ว','เคลม_ทรัพย์สิน_จ่ายแล้ว']].sum().reset_index()
-        claim_status_paid.columns = ['สถานะ','จำนวน (ล้านบาท)']
-        total_claim_paid = claim_status_paid['จำนวน (ล้านบาท)'].sum()
+        claim_life_amt = df_selected[['เคลม_ผู้ประสบอุบัติเหตุ_จ่ายแล้ว','เคลม_ผู้ประสบอุบัติเหตุ_อยู่ระหว่างดำเนินการ']].sum().reset_index()
+        claim_life_amt.columns = ['สถานะ','จำนวน (ล้านบาท)']
+        total_claim = claim_life_amt['จำนวน (ล้านบาท)'].sum()
         st.markdown(f"""
             <div class="metric-box green-box">
-                <div class="metric-title">Total Paid Claims Amount</div>
-                <div class="metric-value">{total_claim_paid:,.2f} MB</div>
+                <div class="metric-title">Total Life Claims Amount</div>
+                <div class="metric-value">{total_claim:,.2f} MB</div>
             </div>
         """, unsafe_allow_html=True)
+       
     with c4:
-        claim_status_pending = df_selected[['เคลม_ผู้ประสบอุบัติเหตุ_อยู่ระหว่างดำเนินการ','เคลม_ทรัพย์สิน_อยู่ระหว่างดำเนินการ']].sum().reset_index()
-        claim_status_pending.columns = ['สถานะ','จำนวน (ล้านบาท)']
-        total_claim_pending = claim_status_pending['จำนวน (ล้านบาท)'].sum()
+        claim_non_life = df_selected[['เคลม_ทรัพย์สิน_จ่ายแล้ว','เคลม_ทรัพย์สิน_อยู่ระหว่างดำเนินการ']].sum().reset_index()
+        claim_non_life.columns = ['สถานะ','จำนวน (ล้านบาท)']
+        total_claim_paid = claim_non_life['จำนวน (ล้านบาท)'].sum()
         st.markdown(f"""
-            <div class="metric-box yellow-box">
-                <div class="metric-title">Total Pending Claims Amount</div>
-                <div class="metric-value">{total_claim_pending:,.2f} MB</div>
+            <div class="metric-box blue-box">
+                <div class="metric-title">Total Non-life Claims Amount</div>
+                <div class="metric-value">{total_claim_paid:,.2f} MB</div>
             </div>
         """, unsafe_allow_html=True)
 #Charts   
@@ -166,7 +168,7 @@ with st.container():
         claim_status_life.columns = ['สถานะ','จำนวน (ล้านบาท)']
         total_claim_life = claim_status_life['จำนวน (ล้านบาท)'].sum()
         fig3 = px.pie(claim_status_life, values='จำนวน (ล้านบาท)', names='สถานะ', title='ผู้ประสบอุบัติเหตุ', hole=0.5, color='สถานะ', color_discrete_map={'เคลม_ผู้ประสบอุบัติเหตุ_จ่ายแล้ว':'#A3D78A','เคลม_ผู้ประสบอุบัติเหตุ_อยู่ระหว่างดำเนินการ':'#F5C857'})
-        fig3.update_traces(textposition='outside', texttemplate='%{percent}<br>%{value:.2f} MB<br>')
+        fig3.update_traces(textposition='outside', texttemplate='%{percent} (%{value:.2f} MB)')
         fig3.update_layout(annotations=[dict(text=f"Total<br>{total_claim_life:,.2f} MB<br>", x=0.5, y=0.5, font_size=16, showarrow=False)],paper_bgcolor='#F4F4F4')
         st.plotly_chart(fig3, use_container_width=True)
 
@@ -175,7 +177,7 @@ with st.container():
         
         st.subheader("จำนวนเงินการเรียกร้องค่าสินไหมทดแทน")
         fig2 = px.bar(claim_acd_amt, x='ประเภท', y='จำนวน (ล้านบาท)', title='จำนวนเงินการเรียกร้องค่าสินไหมทดแทน', color='ประเภท', color_discrete_map={'จำนวนเงินที่เคลม_เสียชีวิต':'#D1512D','จำนวนเงินที่เคลม_บาดเจ็บ':'#53629E','จำนวนเงินที่เคลม_ทุพพลภาพ':'#8AA624'})
-        fig2.update_traces(textposition='auto', texttemplate='%{y:,.2f} MB')
+        fig2.update_traces(textposition='outside', texttemplate='%{y:,.2f} MB')
         fig2.update_layout(margin=dict(t=80), yaxis=dict(automargin=True), uniformtext_mode='hide',paper_bgcolor='#F4F4F4')
         st.plotly_chart(fig2, use_container_width=True)
         
@@ -185,13 +187,8 @@ with st.container():
         claim_status_nl.columns = ['สถานะ','จำนวน (ล้านบาท)']
         total_claim_nl = claim_status_nl['จำนวน (ล้านบาท)'].sum()
         fig4 = px.pie(claim_status_nl, values='จำนวน (ล้านบาท)', names='สถานะ', title='ทรัพย์สิน', hole=0.5, color='สถานะ', color_discrete_map={'เคลม_ทรัพย์สิน_จ่ายแล้ว':'#A3D78A','เคลม_ทรัพย์สิน_อยู่ระหว่างดำเนินการ':'#F5C857'},)
-        fig4.update_traces(textposition='outside', texttemplate='%{percent}<br>%{value:.2f} MB<br>')
+        fig4.update_traces(textposition='outside', texttemplate='%{percent} (%{value:.2f} MB)')
         fig4.update_layout(annotations=[dict(text=f"Total<br>{total_claim_nl:,.2f} MB<br>", x=0.5, y=0.5, font_size=16, showarrow=False)],paper_bgcolor='#F4F4F4')
         st.plotly_chart(fig4, use_container_width=True)
         
-
-
-
-
-
 
