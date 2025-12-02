@@ -68,7 +68,7 @@ with st.expander("Raw Data"):
     st.download_button("Download", data=csv, file_name="claim_report.csv", mime="text/csv")
    
 # main
-# Total Data
+#Total
 with st.container():
     c1,c2,c3,c4 = st.columns(4)
     st.markdown("""
@@ -152,7 +152,7 @@ with st.container():
                 <div class="metric-value">{total_claim_paid:,.2f} MB</div>
             </div>
         """, unsafe_allow_html=True)
-# Charts   
+#Charts   
 with st.container():
     col1, col2 = st.columns(2)
     with col1:
@@ -167,7 +167,7 @@ with st.container():
         claim_status_life.columns = ['สถานะ','จำนวน (ล้านบาท)']
         total_claim_life = claim_status_life['จำนวน (ล้านบาท)'].sum()
         fig3 = px.pie(claim_status_life, values='จำนวน (ล้านบาท)', names='สถานะ', title='ผู้ประสบอุบัติเหตุ', hole=0.5, color='สถานะ', color_discrete_map={'เคลม_ผู้ประสบอุบัติเหตุ_จ่ายแล้ว':'#A3D78A','เคลม_ผู้ประสบอุบัติเหตุ_อยู่ระหว่างดำเนินการ':'#F5C857'})
-        fig3.update_traces(textposition='outside', texttemplate='%{percent} (%{value:.2f} MB)')
+        fig3.update_traces(textposition='outside', texttemplate='%{percent}<br>(%{value:.2f} MB)'<br>)
         fig3.update_layout(annotations=[dict(text=f"Total<br>{total_claim_life:,.2f} MB<br>", x=0.5, y=0.5, font_size=16, showarrow=False)],paper_bgcolor='#F4F4F4')
         st.plotly_chart(fig3, use_container_width=True)
 
@@ -178,15 +178,15 @@ with st.container():
         total_claim_acd = claim_acd_amt['จำนวน (ล้านบาท)'].sum()
         st.subheader("จำนวนเงินการเรียกร้องค่าสินไหมทดแทน")
         fig2 = px.bar(claim_acd_amt, x='ประเภท', y='จำนวน (ล้านบาท)', title='จำนวนเงินการเรียกร้องค่าสินไหมทดแทน', color='ประเภท', color_discrete_map={'จำนวนเงินที่เคลม_เสียชีวิต':'#D1512D','จำนวนเงินที่เคลม_บาดเจ็บ':'#53629E','จำนวนเงินที่เคลม_ทุพพลภาพ':'#8AA624'})
-        fig2.update_traces(textposition='outside', texttemplate='%{y:,.2f} MB')
+        fig2.update_traces(textposition='auto', texttemplate='%{y:,.2f} MB')
         fig2.update_layout(margin=dict(t=80), yaxis=dict(automargin=True), uniformtext_mode='hide',paper_bgcolor='#F4F4F4')
         st.plotly_chart(fig2, use_container_width=True)
-        
+         
         st.subheader("   ")
         claim_status_nl = df_selected[['เคลม_ทรัพย์สิน_จ่ายแล้ว','เคลม_ทรัพย์สิน_อยู่ระหว่างดำเนินการ']].sum().reset_index()
         claim_status_nl.columns = ['สถานะ','จำนวน (ล้านบาท)']
         total_claim_nl = claim_status_nl['จำนวน (ล้านบาท)'].sum()
         fig4 = px.pie(claim_status_nl, values='จำนวน (ล้านบาท)', names='สถานะ', title='ทรัพย์สิน', hole=0.5, color='สถานะ', color_discrete_map={'เคลม_ทรัพย์สิน_จ่ายแล้ว':'#A3D78A','เคลม_ทรัพย์สิน_อยู่ระหว่างดำเนินการ':'#F5C857'},)
-        fig4.update_traces(textposition='outside', texttemplate='%{percent} (%{value:.2f} MB)')
+        fig4.update_traces(textposition='outside', texttemplate='%{percent}<br>(%{value:.2f} MB)<br>')
         fig4.update_layout(annotations=[dict(text=f"Total<br>{total_claim_nl:,.2f} MB<br>", x=0.5, y=0.5, font_size=16, showarrow=False)],paper_bgcolor='#F4F4F4')
         st.plotly_chart(fig4, use_container_width=True)
