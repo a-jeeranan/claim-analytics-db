@@ -9,7 +9,6 @@ warnings.filterwarnings('ignore')
 
 st.set_page_config(
     page_title='7 Dangerous Days Claims Report',
-    page_icon='🚗🚨',
     layout='wide',
     initial_sidebar_state='expanded'
 )
@@ -69,7 +68,7 @@ with st.expander("Raw Data"):
     st.download_button("Download", data=csv, file_name="claim_report.csv", mime="text/csv")
    
 # main
-#Total
+# Total Data
 with st.container():
     c1,c2,c3,c4 = st.columns(4)
     st.markdown("""
@@ -153,7 +152,7 @@ with st.container():
                 <div class="metric-value">{total_claim_paid:,.2f} MB</div>
             </div>
         """, unsafe_allow_html=True)
-#Charts   
+# Charts   
 with st.container():
     col1, col2 = st.columns(2)
     with col1:
@@ -178,13 +177,10 @@ with st.container():
         claim_acd_amt.columns = ['ประเภท','จำนวน (ล้านบาท)']
         total_claim_acd = claim_acd_amt['จำนวน (ล้านบาท)'].sum()
         st.subheader("จำนวนเงินการเรียกร้องค่าสินไหมทดแทน")
-        
-        st.subheader("จำนวนเงินการเรียกร้องค่าสินไหมทดแทน")
         fig2 = px.bar(claim_acd_amt, x='ประเภท', y='จำนวน (ล้านบาท)', title='จำนวนเงินการเรียกร้องค่าสินไหมทดแทน', color='ประเภท', color_discrete_map={'จำนวนเงินที่เคลม_เสียชีวิต':'#D1512D','จำนวนเงินที่เคลม_บาดเจ็บ':'#53629E','จำนวนเงินที่เคลม_ทุพพลภาพ':'#8AA624'})
         fig2.update_traces(textposition='outside', texttemplate='%{y:,.2f} MB')
         fig2.update_layout(margin=dict(t=80), yaxis=dict(automargin=True), uniformtext_mode='hide',paper_bgcolor='#F4F4F4')
         st.plotly_chart(fig2, use_container_width=True)
-        
         
         st.subheader("   ")
         claim_status_nl = df_selected[['เคลม_ทรัพย์สิน_จ่ายแล้ว','เคลม_ทรัพย์สิน_อยู่ระหว่างดำเนินการ']].sum().reset_index()
@@ -194,6 +190,3 @@ with st.container():
         fig4.update_traces(textposition='outside', texttemplate='%{percent} (%{value:.2f} MB)')
         fig4.update_layout(annotations=[dict(text=f"Total<br>{total_claim_nl:,.2f} MB<br>", x=0.5, y=0.5, font_size=16, showarrow=False)],paper_bgcolor='#F4F4F4')
         st.plotly_chart(fig4, use_container_width=True)
-        
-
-
